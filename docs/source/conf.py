@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'huzx-tec-documents'
+project = 'Huzx'
 copyright = '2021, huzx'
 author = 'huzx'
 
