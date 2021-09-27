@@ -3,14 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to huzx-tec-documents's documentation!
+Welcome to huzx's documentation
 ==============================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-HomePage
+   HomePage.md
 
 Indices and tables
 ==================
