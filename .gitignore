@@ -10,7 +10,7 @@ bin/
 *.iml
 *git.properties
 *.tokens
-docs/source/*.py
+docs/build/html/*
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
