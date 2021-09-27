@@ -10,5 +10,5 @@ Welcome to huzx's documentation
    :maxdepth: 2
    :caption: Contents:
 
-   01_Realtime_Data_Stack.md
-   02_Realtime_DataBase.md
+   01_Realtime_Data_Stack
+   02_Realtime_DataBase
