@@ -10,7 +10,7 @@ Welcome to huzx-tec-documents's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+HomePage
 
 Indices and tables
 ==================

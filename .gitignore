@@ -1,0 +1,22 @@
+.*
+!.mvn/extensions.xml
+!.mvn/settings.xml
+!.editorconfig
+!.gitignore
+!.gitattributes
+.idea
+/config/
+bin/
+*.iml
+*git.properties
+*.tokens
+docs/source/*.py
+
+# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+!/.mvn/wrapper/maven-wrapper.jar
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
