@@ -12,3 +12,5 @@ Welcome to huzx's documentation
 
    01_Realtime_Data_Stack
    02_Realtime_DataBase
+   03_GradleTools.md
+   04_Using_Github_AS_Repository.md
