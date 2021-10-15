@@ -82,7 +82,7 @@ mvn deploy
 
 ##### 4.1.2.2.4 检查是否部署成功
 
-![image-20210925113042650](./images/image-20210925113042650.png)
+![image-20210925113042650](../images/image-20210925113042650.png)
 
 
 
@@ -102,5 +102,79 @@ mvn deploy:deploy-file \
 
 ### 4.1.4 如何release对应版本到github上
 
-
 ## 4.2 Using Github as Docker Repository
+
+### 4.2.1 导入PAT(person access token)
+
+```shell
+export CR_PAT=xxxx
+echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+```
+
+### 4.2.2 Build docker image
+
+#### 4.2.2.1 在合法Docker目录下，编译Docker Image
+
+```
+docker build -t huzx.ghcr.example:0.1 .
+docker tag eede519a3d54 ghcr.io/huzx0608/huzx.ghcr.example:0.1
+docker push ghcr.io/huzx0608/huzx.ghcr.example:0.1
+```
+
+#### 4.2.2.2 在Github对应的package下，可以看到推送的Image
+
+#### 4.2.2.3 从Github上拉取推送的Image
+
+```
+docker pull ghcr.io/huzx0608/huzx.ghcr.example:0.1
+```
+
+### 4.2.3. Github workflow release package automatic
+
+#### 4.2.3.1 add github docker image in github workflow
+
+```yaml
+
+env:
+  IMAGE_NAME: github_java_example
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log in to registry
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+```
