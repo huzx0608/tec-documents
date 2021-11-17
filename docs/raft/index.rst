@@ -3,17 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to huzx's documentation
+Knowledage about Raft
 ==============================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   data_stack/index
-   nosql/index
-   rocksdb/index
-   java/index
-   raft/index
-   tools/index
-
+   01_Raft.md
+   02_Raft_Implement.md
