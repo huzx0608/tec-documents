@@ -12,8 +12,8 @@ Welcome to huzx's documentation
 
    data_stack/index
    nosql/index
+   raft/index
    rocksdb/index
    java/index
-   raft/index
    tools/index
 
