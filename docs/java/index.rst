@@ -13,3 +13,5 @@ Java Language
    01_StampedLock.md
    02_NavigableMap.md
    03_SPI.md
+   04_Disruptor.md
+   05_Singleton.md
