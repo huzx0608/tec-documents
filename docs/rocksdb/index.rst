@@ -1,4 +1,4 @@
-Knowledge about Rocksdb
+Knowledge about Embedded User Library(rocksdb)
 =============
 
 .. toctree::

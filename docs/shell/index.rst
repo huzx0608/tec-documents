@@ -3,18 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to huzx's documentation
+Linux Shell Language
 ==============================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   data_stack/index
-   nosql/index
-   raft/index
-   rocksdb/index
-   java/index
-   tools/index
-   shell/index
-
+   01_Basic_Command.md
