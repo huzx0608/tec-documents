@@ -42,3 +42,13 @@ To deliver an efficient implementation of Streams, Pravega is based on a tiered 
 In Pravega, Tier 1 is based on an append-only Log data structure.  As Leigh Stewart observed, there are really three data access mechanisms in a Log:
 
 ![Airchtecure](../images/nosql/04_03_pravega_tiered_storage.png)
+
+All of the write activity, and much of the read activity happens at the tail of the log.  Writes are appended to the log and many clients try to read data immediately as it is written to the log. These two data access mechanisms are dominated by the need for low latency – low latency writes by Writers and near real-time access to the published data by Readers.
+
+Please note that not all Readers read from the tail of the log. Some Readers read by starting at some arbitrary position in the log.  These reads are known as catch-up reads.  Access to historical data traditionally was done by batch analytics jobs, often using HDFS and Map/Reduce.  However with new streaming applications, we can access historical data as well as current data by just accessing the log.  One approach would be to store all the historical data in SSDs similar to tail data operations, but that leads to an expensive task and force customers to economize by deleting historical data.
+
+Pravega offers a mechanism that allows customers to use cost-effective, highly-scalable, high-throughput storage for the historical part of the log, that way they won’t have to decide on when to delete historical data.  Basically, if storage is cheap enough, why not keep all of the history?
+
+Tier 1 Storage aids in faster writes to the Streams by assuring durability and makes reading from the tail of a Stream much quicker. Tier 1 Storage is based on the open source Apache BookKeeper Project. Though not essential, we presume that the Tier 1 Storage will be typically implemented on faster SSDs or even non-volatile RAM.
+
+Tier 2 Storage provides a highly-scalable, high-throughput cost-effective storage. We expect this Tier 2 to be typically deployed on spinning disks. Pravega asynchronously migrates Events from Tier 1 to Tier 2 to reflect the different access patterns to Stream data. Tier 2 Storage is based on an HDFS model. 

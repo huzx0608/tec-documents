@@ -11,6 +11,7 @@ bin/
 *git.properties
 *.tokens
 docs/build/html/*
+docs/build/*
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
