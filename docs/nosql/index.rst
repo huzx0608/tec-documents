@@ -11,3 +11,6 @@ New SQL Database
    :caption: Contents:
 
    01_Benchmark.md
+   02_herddb.md
+   03_apache_bookkeeper.md
+   04_apache_pravega.md
