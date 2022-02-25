@@ -5,7 +5,7 @@
 - Generator SSH-Key without promote
 
 ```shell
-ssh-keygen -t ras -N '' -f ~/.ssh/id_rsa <<< y
+ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa <<< y
 ```
 
 ## Ansible

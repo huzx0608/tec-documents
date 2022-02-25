@@ -6,7 +6,7 @@
 gradle wrapper
 ```
 详细目录结构输出如下：
-![gradle-wrapper目录结构](../images/03_01.png)
+![gradle-wrapper目录结构](../images/tools/03_01.png)
 
 ## 1.2 如何发布Zip包
 
