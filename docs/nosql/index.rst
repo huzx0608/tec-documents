@@ -14,3 +14,6 @@ New SQL Database
    02_herddb.md
    03_apache_bookkeeper.md
    04_apache_pravega.md
+   05_basicKnowledge_db.md
+   06_calcite_concept.md
+   07_calcite_concept.md

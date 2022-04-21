@@ -77,3 +77,50 @@ public class SqlSelect extends SqlCall {
 　　内置SQL实现
 　　  如果一个适配器没有实现所有核心关系运算符，Calcite如何实现SQL？
 　　  答案是一个特定的内置调用约定EnumerableConvention。可枚举约定的关系表达式被实现为“内置”：Calcite生成Java代码，编译并在其自己的JVM中执行它。可枚举约定比运行在列式数据文件上的分布式引擎效率低，但可以实现所有核心关系运算符以及所有内置的SQL函数和运算符。如果一个数据源不能实现一个关系运算符，则枚举约定是一个回退。
+
+
+## 4.SqlNode to RelNode
+
+此过程中SqlToRelConverter会将SqlNode转化成RelNode, 这其中主要涉及了以下几个数据结构
+
+1. RelNode关系表达式， 主要有TableScan, Project, Sort, Join等。如果SQL为查询的话，所有关系达式都可以在SqlSelect中找到, 如 where和having 对应的Filter, selectList对应Project, orderBy、offset、fetch 对应着Sort, From 对应着TableScan/Join等等, 示便Sql最后会生成如下RelNode树 LogicalProject LogicalFilter LogicalTableScan
+2. RexNode行表达式， 如RexLiteral(常量), RexCall(函数)， RexInputRef(输入引用)等， 还是这一句SQL select id, cast(score as int), 'hello' from T where id < ?, 其中id 为RexInputRef, cast为RexCall, 'hello' 为RexLiteral等
+
+3. Traits转化特征，存在于RelNode中，目前有三种Traits: Convention、RelCollation、 RelDistribution。 
+   - Convention指的是改关系表达式所遵循的规范，如SparkConvention、PigConvention， 同一个关系表达式的所有输入必须含有相同的Convention. 可以通过ConverterRule将一个Convention转化成另一个Convention. 
+   - RelCollation 指的是该关系表达式所定义数据的排序，比如说LogicalSort 如果RelCollation标识数据如果已经是排序好了，可以消除LogicalSort.
+   - RelDistribution 标识数据的分布特点。
+
+4. Rule 转化规则，可以将一个RelNode 转化另一种RelNode, 目前Calcite主要有两种Rule. 4.1 直接继承RelOptRule。 这种类型的Rule主要作用是将一个关系表达式转化成等价的另一种表达式 4.2 继承ConverterRule.将RelNode的Convention转化成另一种Convention
+
+5. Planners 优化器。主要有两种HepPlanner和VolcanoPlanner分别对应着RBO和CBO优化器
+
+## 5. HepProgramBuilder介绍
+
+先初始化 HepProgramBuilder 也是为了后面初始化 HepProgram 做准备，HepProgramBuilder 主要也就是提供了一些配置设置和添加规则的方法等，常用的方法如下：
+
+- addRuleInstance()：注册相应的规则；
+- addRuleCollection()：这里是注册一个规则集合，先把规则放在一个集合里，再注册整个集合，如果规则多的话，一般是这种方式；
+- addMatchLimit()：设置 MatchLimit，这个 rule match 次数的最大限制；
+- addMatchOrder() Rule 匹配的顺序
+  
+HepProgram 这个类对于后面 HepPlanner 的优化很重要，它定义 Rule 匹配的顺序，默认按【深度优先】顺序，它可以提供以下几种（见 HepMatchOrder 类):
+- ARBITRARY：按任意顺序匹配（因为它是有效的，而且大部分的 Rule 并不关心匹配顺序）；
+- BOTTOM_UP：自下而上，先从子节点开始匹配；
+- TOP_DOWN：自上而下，先从父节点开始匹配；
+- DEPTH_FIRST：深度优先匹配，某些情况下比 ARBITRARY 高效（为了避免新的 vertex 产生后又从 root 节点开始匹配）。
+
+这个匹配顺序到底是什么呢？对于规则集合 rules，HepPlanner 的算法是：从一个节点开始，跟 rules 的所有 Rule 进行匹配，匹配上就进行转换操作，这个节点操作完，再进行下一个节点，这里的匹配顺序就是指的节点遍历顺序（这种方式的优劣，我们下面再说）。
+
+
+
+
+## 相关的疑问
+
+1、Traits如何理解？
+
+```java
+public RelNode optimize(RelNode relNode, Convention convention) {
+        RelTraitSet traitSet = planner.emptyTraitSet().replace(convention);
+        List<RelOptRule> rules = DingoRules.rules();
+```
