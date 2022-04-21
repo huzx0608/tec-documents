@@ -3,9 +3,6 @@
 ## Tikv architecture
 
 
-
-![image-20211105100011699](../images/image-20211105100011699.png)
-
 RocksDB作为TiKV的核心存储引擎，用于存储Raft日志以及用户数据。每个TiKV实例中有两个RocksDB实例，一个用于存储Raft日志（通常被称为raftdb），另一个用于存储用户数据以及MVCC信息（通常被称为kvdb）。kvdb中有四个ColumnFamily：raft、lock、default和write：
 
 - raft列：用于存储各个Region的元信息，仅占极少量空间

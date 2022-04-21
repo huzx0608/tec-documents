@@ -12,7 +12,7 @@ In a cluster for each tablespace a leader node is designated by the administrato
 
 Indexes are supported by using an implementation of the Block Range Index pattern (BRIN indexes), adapted to the way the HerdDB uses to store data.
 
-![Architecture about HerdDB](../images/nosql/01_herddb_architecture.md)
+![Architecture about HerdDB](../images/nosql/01_herddb_architecture.png)
 
 ### Write Operation
 

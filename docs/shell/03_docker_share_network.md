@@ -6,28 +6,28 @@ The desired result was to be able to define a docker-compose.yml in one file, an
 
 ## Default scenario: Two separate docker-compose.yml and two separate default networks
 
-![docker-compose-simple-image](../../images/shell/docker-compose-1.png)
+![docker-compose-simple-image](../images/shell/docker-compose-1.png)
 
 When it starts up, a default network is created. Its name is based on the service name and the directory name of the docker-compose.yml file.
 
-![docker-compose-simple-image](../../images/shell/docker-compose-2.png)
+![docker-compose-simple-image](../images/shell/docker-compose-2.png)
 
 ### Second docker compose file
 
-![docker-compose-simple-image](../../images/shell/docker-compose-3.png)
+![docker-compose-simple-image](../images/shell/docker-compose-3.png)
 
 Starting services in a second docker compose file, we see the same behavior. A new default network is created and used.
 
-![docker-compose-simple-image](../../images/shell/docker-compose-4.png)
+![docker-compose-simple-image](../images/shell/docker-compose-4.png)
 
 A side-effect of these isolated networks are that the containers are unable to ping one another by service name or container name.
 
 ### Test: From Service 1 ping Service 2
 
-![docker-compose-simple-image](../../images/shell/docker-compose-5.png)
+![docker-compose-simple-image](../images/shell/docker-compose-5.png)
 
 ### Test: Service 2 ping Service 1
-![docker-compose-simple-image](../../images/shell/docker-compose-6.png)
+![docker-compose-simple-image](../images/shell/docker-compose-6.png)
 
 ## New scenario: Sharing a network between services
 
@@ -36,22 +36,22 @@ If you want define services in multiple docker-compose.yml files, and also have 
 To create an external network, you can run ```docker network create <name>```. -- where <name> can be a single string without spaces.
 
 ### Creating the network
-![docker-compose-simple-image](../../images/shell/docker-compose-7.png)
+![docker-compose-simple-image](../images/shell/docker-compose-7.png)
 
 ### Modified first docker-compose file with network configured
-![docker-compose-simple-image](../../images/shell/docker-compose-8.png)
+![docker-compose-simple-image](../images/shell/docker-compose-8.png)
 
 Restarting the services
 
-![docker-compose-simple-image](../../images/shell/docker-compose-9.png)
+![docker-compose-simple-image](../images/shell/docker-compose-9.png)
 
 ### Modified second docker-compose file with network configured
 
-![docker-compose-simple-image](../../images/shell/docker-compose-10.png)
+![docker-compose-simple-image](../images/shell/docker-compose-10.png)
 
 Restarting the services
 
-![docker-compose-simple-image](../../images/shell/docker-compose-11.png)
+![docker-compose-simple-image](../images/shell/docker-compose-11.png)
 
 After running `docker-compose up -d` on both docker-compose.yml files, we see that no new networks were created.
 

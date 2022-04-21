@@ -8,7 +8,7 @@
 
 通过Parser, 可以将Sql转化成SqlNode, 什么是SqlNode？ SqlNode是Calcite中用于表达关系运算的中间数据结构，这么说可能有些抽象，可以看下图:
 
-![](../images/nosql/06_02_sqlnode.png)
+![](../images/nosql/06_02_sqlNode.png)
 
 便于解释
 

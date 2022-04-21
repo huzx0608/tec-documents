@@ -14,7 +14,7 @@ ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa <<< y
 
 Host 信息：
 
-``` ansible
+```shell
 [node]
 10.211.55.78
 10.211.55.79
@@ -23,7 +23,7 @@ Host 信息：
 
 ansible对应的playbook:
 
-``` ansible
+```shell
 - name: storage
   set_fact: host_list="{{ groups['node'] }}"
 - name: combine
