@@ -3,17 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Java Language
+Java Thread Pattern
 ==============================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   01_StampedLock.md
-   02_NavigableMap.md
-   03_SPI.md
-   04_Disruptor.md
-   05_Singleton.md
-   06_Java_designed_pattern.md
-   pattern/index
+06_01_Single-Thread-Execution.md
