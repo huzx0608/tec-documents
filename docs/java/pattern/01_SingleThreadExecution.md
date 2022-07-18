@@ -118,9 +118,46 @@ ready = true;
 
 #### 角色分析
 
+- GuardedObject
+
+GuardedObject角色是一个拥有被防护的方法的类。当线程执行guardedMethod方法时，若条件成立，则执行实际的处理。若守护条件不成立，则不执行实际的处理，直接返回。守护条件的成立与否，会随着GuardedObject角色的状态变化而发生变化。
+
+
+### 说明
+
+
+![Architecture about Balking](../../images/java/pattern/java_pattern_balk.png)
+
+
+### 扩展
+
+#### 何时使用
+
+- 并不需要执行时
+- 不需要等待守护条件成立时
+- 守护条件仅在第一次成立时
+
+#### Balking vs Garded Suspension
+
+- 与Guarded Suspension区别
+
+一个需要等待，一个检查不满足直接返回
+
+## Producer && Consumer
+
+### 含义
+
+### 角色
+
+#### 程序说明
+
+#### 角色分析
+
 ### 说明
 
 ### 扩展
+
+
 
 
 
