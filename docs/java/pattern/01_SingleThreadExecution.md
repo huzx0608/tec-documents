@@ -147,17 +147,109 @@ GuardedObject角色是一个拥有被防护的方法的类。当线程执行guar
 
 ### 含义
 
+生产者安全的将数据通过某个渠道交给消费者。
+
 ### 角色
+
+- Data
+- Producer
+- Consumer
+- Channel（负责安全责任）
 
 #### 程序说明
 
+
+![Architecture about Balking](../../images/java/pattern/java_pattern_producer_consumer.png)
+
 #### 角色分析
+
+- Channel
+
+可能的实现方式
+1、队列-先接收的先传递
+2、栈-后接收的先传递
+3、优先队列-“优先”的先传递
+
 
 ### 说明
 
+线程的协调运行要考虑“放在中间的东西”
+线程的互斥处理要考虑“应该保护的东西”
+
 ### 扩展
 
+- InterruptedException
 
+可能会花费时间，但可以取消。
+
+- Sleep和Interrupt
+
+线程A在Sleep期间，线程B可以通过interrupt方法进行状态打断。此时A会收到InterruptException
+
+- Wait和Interrupt
+
+当正在wait的线程调用interrupt方法时（既线程被取消执行时），该线程会在重新获取锁之后，抛出InterruptedExeption;在获取锁之前，线程不会抛出InterruptedExeption.
+
+- Notify和interrupt区别
+
+notify/notifyAll是java.lang.object类的方法，唤醒的是该实例的等待队列中的线程，而不是直接指定线程。notify/notifyAll唤醒的线程会执行wait的下一条语句。另外，执行notify/notifyAll时，必须要获得实例的锁。
+
+interrupt方法时java.lang.Thread的方法，可以直接指定线程并唤醒。当被interrupt的线程处于sleep或者wait时，会抛出InterrupedException.执行interrupt（取消其他线程）时，并不需要获取要取消线程的锁。
+
+- Join和interrupt
+
+当线程使用join方法等待其他线程终止时，也可以通过interrupt来取消。由于join方法无需获取锁，所以线程的控制权也会立即跳转到catch语句中。
+
+- interrupt 和 interrupted
+
+interrupt()时让线程变为中断状态的方法
+interrupted()是检查并清楚中断状态的方法
+
+- BlockingQueue实现
+
+
+![Architecture about Balking](../../images/java/pattern/java_patter_blockingqueue.png)
+
+
+## Read-Write Lock pattern
+
+### 含义
+
+线程的读取和写入操作分开考虑。在执行读取操作之前，必须获取用于读的锁；在执行写入操作之前，线程必须获取写入的锁。
+
+由于当线程执行读取操作时，实例的状态没有发生变化，所以多个线程可以同时读取；但是读取时，不可以写入。
+
+当线程执行写入操作时，实例的状态发生变化，因此当一个线程在写入时，其他线程不可以读取或者写入。
+
+### 角色
+
+- Data
+- WriteThread
+- ReaderThread
+- ReadWriteLock
+- Main
+
+#### 程序说明
+
+![Architecture about Balking](../../images/java/pattern/java_pattern_read_write_lock.png)
+
+#### 角色分析
+
+- Reader
+- Writer
+- SharedResource
+- ReadWriteLock
+
+### 说明
+
+![Architecture about Balking](../../images/java/pattern/java_pattern_read_write_lock_1.png)
+
+### 扩展
+
+#### 使用场景
+
+- 适合读取操作比写操作频繁的场景
+- 适合读取操作繁重的场景
 
 
 
