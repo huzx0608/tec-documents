@@ -253,6 +253,121 @@ interrupted()是检查并清楚中断状态的方法
 
 
 
+## Thread-Per-Message
+
+### 含义
+
+为每个命令或者消息新分配一个线程。消息的委托段告诉执行端，这项工作交给你了。
+
+### 角色
+
+- Client
+
+Client角色会向Host角色发出请求，但是不知道Host角色是如何实现该请求的。
+
+- Host
+
+Host角色接收到Client角色的请求之后，会新创建并启动一个线程。新创建的线程将使用Help
+角色来处理请求。
+
+- Helper
+
+Helper角色为Host提供处理请求的能力。
+
+#### 程序说明
+
+
+![Architecture about Thread-Per-Msg](../../images/java/pattern/java_pattern_thread_per_msg.png)
+
+#### 角色分析
+
+- Main
+- Host
+- Helper
+
+### 说明
+
+### 扩展
+
+#### 优势
+
+- 提高响应性，缩短延迟时间
+- 适用于操作顺序没有要求时
+- 适用于不需要返回值时
+- 应用于服务器
+- 调用方法+启动线程=>发送消息
+
+#### 线程类
+
+- java.util.concurrent.ThreadFactory
+- java.util.concurrent.Executors.defaultThreadFactory
+- java.util.concurrent.Executor(手动创建线程)
+
+```java 
+new Executor() {
+    public void execute(Runnable command) {
+        new Thread(command).start();
+    }
+}
+
+executor.execute(new Runnable() {
+    public void run() {
+        // do something
+    }
+});
+```
+
+- java.util.concurrent.ExecutorService
+
+
+- 相关类图说明
+
+![Architecture about Thread-Per-Msg](../../images/java/pattern/java_pattern_thread_executor.png)
+
+## Worker Thread
+
+### 含义
+
+工作不来就一直等，工作来了就干活。
+
+### 角色
+
+- Main
+- ClientThread: 表示发送工作请求的线程的类
+- Request: 表示工作请求的类
+- Channel: 接收工作请求并将工作请求交给工人线程的类
+- WorkerThread: 工人线程类
+
+#### 程序说明
+
+![Architecture about Thread-Per-Msg](../../images/java/pattern/java_pattern_worker_thread.png)
+
+
+![Architecture about Thread-Per-Msg](../../images/java/pattern/java_pattern_worker_thread_sequence.png)
+
+#### 角色分析
+
+- Client(委托者)
+
+Client角色创建表示工作请求的Request角色并传递给Channel角色。
+
+- Channel(通信线路)
+
+Channel接收Client角色的Request角色，并将其交给Worker角色。
+
+- Worker(工人)
+
+Worker角色从Channel角色中获取Request角色，并执行其中的工作。本轮工作完成后，会继续去获取其他角色。
+
+- Request（请求）
+
+Request角色表示工作的意思。
+
+
+### 说明
+
+### 扩展
+
 
 ## AAAAAA
 
